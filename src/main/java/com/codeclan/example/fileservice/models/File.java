@@ -1,17 +1,38 @@
 package com.codeclan.example.fileservice.models;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import org.springframework.stereotype.Component;
 
+import javax.persistence.*;
+
+@Entity
+@Table(name = "files")
 public class File {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+
+    @Column(name = "name")
     private String name;
+
+    @Column(name = "extension")
     private String extension;
+
+    @Column(name = "size")
     private int size;
+
+    @JsonIgnoreProperties("files")
+    @ManyToOne
+    @JoinColumn(name = "folder_id", nullable = false)
     private Folder folder;
 
-    public File(long id, String name, String extension, int size, Folder folder) {
-        this.id = id;
+    public File(){
+
+    }
+
+    public File(String name, String extension, int size, Folder folder) {
         this.name = name;
         this.extension = extension;
         this.size = size;

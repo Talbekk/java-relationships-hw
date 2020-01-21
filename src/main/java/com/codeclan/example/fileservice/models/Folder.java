@@ -1,16 +1,36 @@
 package com.codeclan.example.fileservice.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+import javax.persistence.*;
 import java.util.List;
 
+
+@Entity
+@Table(name = "folders")
 public class Folder {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+
+    @Column(name = "title")
     private String title;
+
+    @JsonIgnoreProperties("folder")
+    @OneToMany(mappedBy = "folder")
     private List<File> files;
+
+    @JsonIgnoreProperties("folders")
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    public Folder(long id, String title, User user) {
-        this.id = id;
+    public Folder(){
+
+    }
+
+    public Folder(String title, User user) {
         this.title = title;
         this.user = user;
     }
